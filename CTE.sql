@@ -1,11 +1,4 @@
 
-Conversation opened. 1 unread message.
-
-Skip to content
-Using Gmail with screen readers
-
-1 of 1,584
-
 
 -- example for some basic sql functions
 
@@ -14,19 +7,12 @@ Using Gmail with screen readers
 -- suzanne
 
 CREATE TABLE dbo.PAIDCHECKS (
-
 CHECKID int IDENTITY(1,1) NOT NULL,
-
 BANK VARCHAR(10) Default 'BOA',
-
 CHECKNUM varchar(10) NOT NULL,
-
 PAIDTO VARCHAR(100) NOT NULL,
-
 PAIDDATE dateTime NOT NULL,
-
 CHECKAMOUNT DECIMAL (10,2) NOT NULL
-
 )
 
 GO
