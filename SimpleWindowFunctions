@@ -1,0 +1,48 @@
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP (1000) [AS_Of_Date]
+      ,[Tenant_Id]
+      ,[BusUnit_ID]
+      ,[Unit_ID]
+      ,[Region_ID]
+      ,[AssetGrouping_ID]
+      ,[SF]
+      ,[TotalPercentRent]
+      ,[AnnualizedRent]
+      ,[TotalReimB]
+      ,[Sales_Retail_Type]
+      ,[Sales_Period]
+      ,[Sales_Most_Recent_Year]
+      ,[Sales_Previous_Year]
+      ,[Sales_Two_Years_Ago]
+      ,[Inserted_Date]
+      ,[Tenant_Name]
+  FROM [Fact_Sales]
+
+  /****** Script for SelectTopNRows command from SSMS  ******/
+  -- Find Average
+SELECT BusUnit_ID, Sales_Most_Recent_Year, Avg(Sales_Most_Recent_Year) Over (Partition By BusUnit_ID) as AvgMR
+  FROM [Fact_Sales]
+  
+    /****** Script for SelectTopNRows command from SSMS  ******/
+SELECT BusUnit_ID, Sales_Most_Recent_Year, Max(Sales_Most_Recent_Year) Over (Partition By BusUnit_ID) as MaxMR
+  FROM [Fact_Sales]
+  
+  -- Be careful and keep order by out of the Windows Function
+    /****** Script for SelectTopNRows command from SSMS  ******/
+SELECT BusUnit_ID, Unit_ID, SF, Sales_Most_Recent_Year, Max(Sales_Most_Recent_Year) Over (Partition By BusUnit_ID) as MaxMR
+  FROM [Fact_Sales] order by BusUnit_ID, SF
+  
+    /****** Script for SelectTopNRows command from SSMS  ******/
+SELECT BusUnit_ID, Unit_ID, Sales_Most_Recent_Year, 
+	   Rank() Over (Partition By BusUnit_ID order by Sales_Most_Recent_Year) as salesRank
+  FROM [Fact_Sales] order by BusUnit_ID, SalesRank Desc
+  
+SELECT 
+    BusUnit_ID, Unit_ID, Sales_Most_Recent_Year, 
+    CUME_DIST() OVER (
+		PARTITION BY BusUnit_ID -- group by prop
+        ORDER BY Sales_Most_Recent_Year 
+    ) MR_Sales_Distr
+	FROM 
+     [Fact_Sales]
+	 -- 50% have most recent sales over 826409 (order by matters asc/desc?)
